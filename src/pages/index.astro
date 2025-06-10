@@ -1,8 +1,8 @@
 ---
-
+import "../styles/global.css";
 ---
 
-<html lang="en">
+<html lang="en" data-theme="forest">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -10,7 +10,14 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="flex justify-center p-5 min-h-screen" >
+		<div class=" bg-base-300 p-3 w-7xl flex rounded-sm shadow-2xl flex-col items-center justify-start">
+			<hr class=" w-full m-3">
+			<h1 class="text-5xl">Vagalehns</h1>
+			<hr class=" w-full m-3">
+			<p>Programmer</p>
+			<hr class=" w-full m-3">
+			<img class=" rounded-2xl" src="https://cdn.theasc.com/Apollo-11-as11-40-5902orig-Featured.jpg"/>
+		</div>
 	</body>
 </html>
