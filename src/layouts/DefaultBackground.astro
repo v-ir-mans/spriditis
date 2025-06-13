@@ -4,77 +4,85 @@ import Main from './Main.astro';
 
 interface Doodle {
   src: string;
-  left: boolean;
-  dis: number;
+  x: number;
+  y: number;
 }
 
-const { dark_theme = false } = Astro.props;
+function generateEdgeBiasedRandom(min = 1, max = 100): number {
+  const mid = (max - min) / 2;
+  const r = Math.random(); // uniform [0,1)
+  const biased = (r < 0.5)
+    ? min + mid * (1 - Math.sqrt(1 - 2 * r))  // toward min
+    : max - mid * (1 - Math.sqrt(2 * r - 1)); // toward max
 
-const allImages = import.meta.glob('../assets/Doodles/*', { eager: true }) as Record<string, { default: { src: string } }>;;
-const sources = Object.values(allImages).map(image => image.default.src) ;
+  return Math.round(biased);
+}
 
-console.log(sources);
+const { dark_theme = false, doodle_count=20 } = Astro.props;
+
+const allDoodleImages = import.meta.glob('../assets/Doodles/*', { eager: true }) as Record<string, { default: { src: string } }>;;
+const doodleSources = Object.values(allDoodleImages).map(image => image.default.src) ;
+
+const allObjectImages = import.meta.glob('../assets/Objects/*', { eager: true }) as Record<string, { default: { src: string } }>;;
+const objectSources = Object.values(allObjectImages).map(image => image.default.src) ;
 
 
+function generateRandomList(sourceList: string[], count=10): Doodle[] {
 
-console.log(Object.values(allImages)[0]);
-
-
-function generateRandomList(sourceList: string[]): Doodle[] {
-
-  const length = 60;
+  const length = count;
   const result: Doodle[] = [];
   
   for (let i = 0; i < length; i++) {
 
     const randomSourceIndex = Math.floor(Math.random() * sourceList.length);
     const randomSource = sourceList[randomSourceIndex];
-    
-    const randomLeft = Math.random() > 0.5;
-    
-    const randomDis = Math.floor(Math.random() * 40); // Adjust range as needed
+        
     
     result.push({
       src: randomSource,
-      left: randomLeft,
-      dis: randomDis
+      x: generateEdgeBiasedRandom(),
+      y: Math.floor(Math.random() * 100)
     });
   }
   
   return result;
 }
 
-const randomDoodles = generateRandomList(sources);
+const randomDoodles = generateRandomList(doodleSources, doodle_count);
+const randomObjects = generateRandomList(objectSources,);
 
 
 ---
 
 
 <Main>
-
-    <div id="background" class=" w-full h-full overflow-hidden fixed z-0">
+    
+    <div id="background" class="w-full min-h-full overflow-hidden absolute z-0">
         <div id="grid_texture" class={dark_theme ? "dark":"light"}></div>
         <div id="smear_texture" class={dark_theme ? "dark":"light"}></div>
-        <div id="doodle_texture" class={`flex flex-col ${dark_theme ? 'dark': 'light'}`}>
+        <div id="doodle_texture" class={`relative ${dark_theme ? 'dark': 'light'}`}>
 
           {randomDoodles.map((image, index) => (
             <img
-              class={`select-none w-32 ${image.left ? 'self-start' : 'self-end'} `}
-              style={`${image.left ? 'margin-left' : 'margin-right'}: ${image.dis}%; `}
+              class={`select-none absolute w-80`}
+              style={`top:${[image.y]}%; left:${image.x}%;`}
               src={image.src}
               alt={``}
             />
           ))}
           
         </div>
+
+
     </div>
 
     <div class="z-10 relative w-full h-full ">
         <slot></slot>
     </div>
-
     
 </Main>
+
+
 
 <style>
 
@@ -110,7 +118,7 @@ const randomDoodles = generateRandomList(sources);
     #smear_texture {
         background-size: cover;
         background-position: center;
-        opacity: 0.3;
+        opacity: 0.2;
     }
 
     #smear_texture.dark {
