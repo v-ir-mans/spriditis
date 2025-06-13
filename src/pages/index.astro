@@ -1,23 +1,15 @@
 ---
-import "../styles/global.css";
+import Main from "../layouts/Main.astro"
+
+import DefaultBackground from "../layouts/DefaultBackground.astro"
 ---
 
-<html lang="en" data-theme="forest">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body class="flex justify-center p-5 min-h-screen" >
-		<div class=" bg-base-300 p-3 w-7xl flex rounded-sm shadow-2xl flex-col items-center justify-start">
-			<hr class=" w-full m-3">
-			<h1 class="text-5xl">Vagalehns</h1>
-			<hr class=" w-full m-3">
-			<p>Programmer</p>
-			<hr class=" w-full m-3">
-			<img class=" rounded-2xl" src="https://cdn.theasc.com/Apollo-11-as11-40-5902orig-Featured.jpg"/>
+<Main>
+	<DefaultBackground dark_theme={true}>
+		<div class=" h-6 w-full flex flex-col items-center min-h-dvh p-5">
+			<div class="bg-base-300/30 h-full w-full max-w-7xl backdrop-blur-md shadow-2xl rounded-2xl border border-base-100 flex flex-col items-center p-5">
+				<h1 class=" text-6xl" style="font-family: UnifrakturCook;">Vagalehns</h1>
+			</div>
 		</div>
-	</body>
-</html>
+	</DefaultBackground>
+</Main>

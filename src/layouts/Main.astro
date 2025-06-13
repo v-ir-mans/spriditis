@@ -1,0 +1,34 @@
+---
+
+import "../styles/global.css";
+
+const { title = "Vagalehns" } = Astro.props;
+
+const emojis = ["😀", "😂", "😎", "🤔", "🥳", "😜", "😇", "🌵"];
+
+const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+---
+
+<!doctype html>
+<html lang="en" data-theme="black">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		
+		<link rel="icon" href="/favicon-light.png" media="(prefers-color-scheme: dark)">
+		<link rel="icon" href="/favicon-dark.png" media="(prefers-color-scheme: light)">
+
+
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} {emoji}</title>
+	</head>
+    
+	<body class="min-h-dvh relative bg-fuchsia-300">
+
+        <slot></slot>
+
+	</body>
+
+	
+</html>
